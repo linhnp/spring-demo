@@ -214,3 +214,6 @@ gradle-app.setting
 .DS_Store
 .vagrant
 tags
+
+# dev application properties file
+application-dev.properties
