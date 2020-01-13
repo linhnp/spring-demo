@@ -1,16 +1,22 @@
-package com.example.web.demo.model;
+package com.example.web.demo.multipledb.model.web;
+
+import com.example.web.demo.model.Auditable;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Customer extends Auditable<String>{
+public class Customer extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
 
     protected Customer(){}
@@ -21,7 +27,7 @@ public class Customer extends Auditable<String>{
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<CustomerRewadsPoint> points = new HashSet<>();
+    private Set<customerRewardsPoint> points = new HashSet<>();
 
     @Override
     public String toString() {

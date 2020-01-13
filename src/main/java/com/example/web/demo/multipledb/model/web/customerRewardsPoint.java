@@ -1,9 +1,12 @@
-package com.example.web.demo.model;
+package com.example.web.demo.multipledb.model.web;
+
+import com.example.web.demo.multipledb.model.web.Customer;
 
 import javax.persistence.*;
 
 @Entity
-public class CustomerRewadsPoint {
+@Table(name = "customer_rewards_point")
+public class customerRewardsPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false, nullable = false)
@@ -15,10 +18,10 @@ public class CustomerRewadsPoint {
 
     private Long point;
 
-    protected CustomerRewadsPoint() {
+    protected customerRewardsPoint() {
     }
 
-    public CustomerRewadsPoint(Customer customer, Long point) {
+    public customerRewardsPoint(Customer customer, Long point) {
         this.point = point;
         this.customer = customer;
     }

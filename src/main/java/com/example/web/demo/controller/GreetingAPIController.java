@@ -1,8 +1,10 @@
 package com.example.web.demo.controller;
 
 import com.example.web.demo.model.Greeting;
-import com.example.web.demo.model.Customer;
-import com.example.web.demo.repository.CustomerRepository;
+import com.example.web.demo.multipledb.model.web.Customer;
+import com.example.web.demo.multipledb.model.web1.User;
+import com.example.web.demo.multipledb.repository.web.CustomerRepository;
+import com.example.web.demo.multipledb.repository.web1.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class GreetingAPIController {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
@@ -30,6 +35,12 @@ public class GreetingAPIController {
     @ResponseBody
     public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
+    }
+
+    @RequestMapping(value = "/users", method=GET)
+    @ResponseBody
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 
     @RequestMapping(value = "/customers", method = POST)

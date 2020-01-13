@@ -1,6 +1,6 @@
-package com.example.web.demo.repository;
+package com.example.web.demo.multipledb.repository.web;
 
-import com.example.web.demo.model.Customer;
+import com.example.web.demo.multipledb.model.web.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
