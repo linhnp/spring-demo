@@ -36,6 +36,14 @@ class TikaExtractTest {
         assertThat(content, containsString("ありのままの姿見せるのよ"));
     }
 
+    @Test
+    void extractPaswordContentParser() throws IOException, TikaException, SAXException {
+        stream = this.getClass().getClassLoader()
+                .getResourceAsStream("protected.doc");
+        String content = TikaExtract.extractPaswordContentParser(stream);
+        assertThat(content, containsString("sdfsfsfsdf"));
+    }
+
     //TODO: open stream only once
     @BeforeEach
     void setUp() {

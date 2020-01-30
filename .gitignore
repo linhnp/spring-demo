@@ -187,7 +187,6 @@ fabric.properties
 /frontend/build/
 
 # Java #
-*.jar
 *.war
 *.class
 

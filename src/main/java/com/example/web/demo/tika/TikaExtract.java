@@ -6,6 +6,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.PasswordProvider;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -42,6 +43,22 @@ public class TikaExtract {
 //                return "password";
 //            }
 //        });
+
+        parser.parse(inputStream, contentHandler, metadata, context);
+
+        return contentHandler.toString();
+    }
+
+    public static String extractPaswordContentParser(InputStream inputStream) throws IOException, TikaException, SAXException {
+        Parser parser = new AutoDetectParser();
+        ContentHandler contentHandler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        ParseContext context = new ParseContext();
+        context.set(PasswordProvider.class, new PasswordProvider() {
+            public String getPassword(Metadata metadata) {
+                return "aa";
+            }
+        });
 
         parser.parse(inputStream, contentHandler, metadata, context);
 
