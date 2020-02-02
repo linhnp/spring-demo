@@ -56,7 +56,7 @@ public class TikaExtract {
         ParseContext context = new ParseContext();
         context.set(PasswordProvider.class, new PasswordProvider() {
             public String getPassword(Metadata metadata) {
-                return "aa";
+                return "password";
             }
         });
 
