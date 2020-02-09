@@ -5,23 +5,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Customer extends Auditable<String>{
+public class Customer extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     private String firstName;
     private String lastName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private Set<CustomerRewadsPoint> points = new HashSet<>();
 
-    protected Customer(){}
+    protected Customer() {
+    }
 
-    public Customer(String firstName, String lastName){
+    public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<CustomerRewadsPoint> points = new HashSet<>();
 
     @Override
     public String toString() {
@@ -40,5 +40,9 @@ public class Customer extends Auditable<String>{
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
