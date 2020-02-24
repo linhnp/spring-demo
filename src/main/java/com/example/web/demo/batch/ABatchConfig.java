@@ -6,11 +6,15 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
@@ -31,6 +35,9 @@ public class ABatchConfig {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    JobLauncher jobLauncher;
+
 //     this one does not work well in this case, as the paging order is changing after each write
 //    @Bean
 //    public RepositoryItemReader<Customer> reader() {
@@ -47,8 +54,10 @@ public class ABatchConfig {
 //                .build();
 //    }
 
-    @Bean
-    public ItemReader<Customer> reader() {
+
+    @StepScope
+    @Bean("reader")
+    public ItemReader<Customer> reader(@Value("#{jobParameters['fileName']}") String name) {
         Map<String, Sort.Direction> sort = new HashMap<>();
         sort.put("id", Sort.Direction.ASC);
         List<Object> paras = new ArrayList<>();
@@ -58,10 +67,10 @@ public class ABatchConfig {
         customerItemReader.setMethodName("findByLastName");
         customerItemReader.setArguments(paras);
         customerItemReader.setSort(sort);
+        customerItemReader.setTest(name);
         return customerItemReader;
     }
 
-    @Bean
     public RepositoryItemWriter<Customer> writer() {
         return new RepositoryItemWriterBuilder<Customer>()
                 .repository(customerRepository)
@@ -73,17 +82,16 @@ public class ABatchConfig {
 //        return new CustomerItemWriter(customerRepository);
 //    }
 
-    @Bean
     public CustomItemProcessor processor() {
         return new CustomItemProcessor();
     }
 
     // batch
-    @Bean(name = "batchJob")
+//    @Bean(name = "batchJob")
     public Job job() {
         Step step = stepBuilderFactory.get("step1")
                 .<Customer, Customer>chunk(10)
-                .reader(reader())
+                .reader(reader(null))
                 .processor(processor())
                 .writer(writer())
                 .build();
@@ -99,6 +107,7 @@ public class ABatchConfig {
         Step write = stepBuilderFactory.get("taskletWrite")
                 .tasklet(new CustomerTaskletWriter(customerRepository)).build();
         return jobBuilderFactory.get("secondBatchJob")
+                .listener(new JobResultListener(job(), jobLauncher))
                 .start(read).next(process).next(write).build();
     }
 

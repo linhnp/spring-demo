@@ -6,12 +6,15 @@ import org.springframework.batch.item.adapter.AbstractMethodInvokingDelegator;
 import org.springframework.batch.item.adapter.DynamicMethodInvocationException;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.MethodInvoker;
@@ -44,6 +47,8 @@ public class CustomerItemReader<T> extends AbstractItemCountingItemStreamItemRea
     private Object lock = new Object();
 
     private String methodName;
+
+    private String test;
 
     public CustomerItemReader() {
         setName(ClassUtils.getShortName(getClass()));
@@ -94,6 +99,10 @@ public class CustomerItemReader<T> extends AbstractItemCountingItemStreamItemRea
         this.methodName = methodName;
     }
 
+    public void setTest(String test) {
+        this.test = test;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.state(repository != null, "A PagingAndSortingRepository is required");
@@ -104,6 +113,7 @@ public class CustomerItemReader<T> extends AbstractItemCountingItemStreamItemRea
     @Nullable
     @Override
     protected T doRead() throws Exception {
+        System.out.println(test);
 
         synchronized (lock) {
             if (results == null || current >= results.size()) {
