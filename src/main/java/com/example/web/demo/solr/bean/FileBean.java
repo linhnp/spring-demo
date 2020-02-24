@@ -6,6 +6,7 @@ public class FileBean {
     private String id;
     private String name;
     private String content;
+    private String type;
 
     public FileBean() {
     }
@@ -14,6 +15,13 @@ public class FileBean {
         this.id = id;
         this.name = name;
         this.content = content;
+    }
+
+    public FileBean(String id, String name, String content, String type) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+        this.type = type;
     }
 
     public String getId() {
@@ -41,5 +49,14 @@ public class FileBean {
     @Field("content")
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Field("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.web.demo.solr;
 
+import com.example.web.demo.solr.bean.Article;
 import com.example.web.demo.solr.bean.FileBean;
+import com.example.web.demo.solr.bean.ParentBean;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -39,6 +41,18 @@ public final class SolrIntergration {
 
     public boolean addFileBean(FileBean fileBean) throws SolrServerException, IOException {
         solrClient.addBean(fileBean);
+        solrClient.commit();
+        return true;
+    }
+
+    public boolean addBean(ParentBean bean) throws SolrServerException, IOException {
+        solrClient.addBean(bean);
+        solrClient.commit();
+        return true;
+    }
+
+    public boolean addBean(Article bean) throws SolrServerException, IOException {
+        solrClient.addBean(bean);
         solrClient.commit();
         return true;
     }

@@ -20,13 +20,12 @@ public class BeanConfiguration {
     @Lazy
     private AuthenticationManager authenticationManager;
 
-    @Bean
-    public RoleHierarchyImpl roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-        return roleHierarchy;
-    }
-
+//    @Bean
+//    public RoleHierarchyImpl roleHierarchy() {
+//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+//        return roleHierarchy;
+//    }
 
     @Bean
     public PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider() {
