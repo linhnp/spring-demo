@@ -38,6 +38,9 @@ public class ABatchConfig {
     @Autowired
     JobLauncher jobLauncher;
 
+
+
+
 //     this one does not work well in this case, as the paging order is changing after each write
 //    @Bean
 //    public RepositoryItemReader<Customer> reader() {
